@@ -11,6 +11,12 @@ export default function SearchScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.infoBox}>
+        <Text style={styles.infoText}>
+          SearchRunesApp helps you search and learn more about runes and their meanings.
+          So you can either click on the rune you want to know more about or use the search function.
+        </Text>
+      </View>
       <TextInput
         style={styles.input}
         placeholder="Search runes..."
@@ -66,5 +72,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontStyle: 'italic',
     color: '#888',
+  },
+    infoBox: {
+    backgroundColor: '#22223b',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#e0c097',
+    width: '100%',
+  },
+  infoText: {
+    color: '#e0c097',
+    fontSize: 15,
+    textAlign: 'center',
   },
 });
