@@ -1,7 +1,11 @@
-import { Image, ScrollView, StyleSheet, Text } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text } from 'react-native';
+// Importera även getCurrentLocale från din i18n-fil
+import { getCurrentLocale, translate } from '../utils/i18n';
 
 export default function RuneDetailScreen ({ route }) {
-  const { rune } = route.params
+  const { rune } = route.params;
+  // Hämta den aktuella språkkoden från din i18n-instans
+  const currentLocale = getCurrentLocale();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -9,15 +13,20 @@ export default function RuneDetailScreen ({ route }) {
         {rune.name}
       </Text>
       <Image source={rune.image} style={styles.image} resizeMode='contain' />
-      <Text style={styles.meaningTitle}>Meaning:</Text>
+      <Text style={styles.meaningTitle}>{translate('meaning_title')}</Text>
       <Text style={styles.meaningText}>
-        {rune.meaning}
+        {/* Använd den aktuella språkkoden för att hämta rätt betydelse.
+            Om översättningen för det aktuella språket saknas, fallbackerar vi till engelska (rune.meaning.en).
+            Det är viktigt att varje runobjekt har en 'en' version. */}
+        {rune.meaning[currentLocale] || rune.meaning.en}
       </Text>
+      <Text style={styles.interpretationTitle}>{translate('interpretation_title')}</Text>
       <Text style={styles.interpretation}>
-        {rune.interpretation}
+        {/* Gör samma sak för tolkningen */}
+        {rune.interpretation[currentLocale] || rune.interpretation.en}
       </Text>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -32,7 +41,6 @@ const styles = StyleSheet.create({
     color: '#e0c097', // Guldaktig
     marginBottom: 20
   },
-
   meaningTitle: {
     fontSize: 18,
     color: '#e0c097', // Ljusare färg
@@ -41,12 +49,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center'
   },
-
   meaningText: {
     fontSize: 16,
     color: '#e0c097',
     textAlign: 'center',
     lineHeight: 24
+  },
+  interpretationTitle: {
+    fontSize: 18,
+    color: '#e0c097',
+    marginTop: 20,
+    marginBottom: 8,
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   interpretation: {
     fontSize: 16,
@@ -56,4 +71,4 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center'
   },
-})
+});

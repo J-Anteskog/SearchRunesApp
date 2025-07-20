@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'; //
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import runes from '../data/runes';
+import { setLocale, translate } from '../utils/i18n'; // Importera setLocale härifrån
 
 export default function SearchScreen({ navigation }) {
   const [query, setQuery] = useState('');
@@ -11,41 +12,50 @@ export default function SearchScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {/* Lägg till knappar för språkval */}
+      <View style={styles.languageButtonsContainer}>
+        <TouchableOpacity style={styles.languageButton} onPress={() => setLocale('en')}>
+          <Text style={styles.languageButtonText}>English</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.languageButton} onPress={() => setLocale('sv')}>
+          <Text style={styles.languageButtonText}>Svenska</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.infoBox}>
         <Text style={styles.infoText}>
-          SearchRunesApp helps you search and learn more about runes and their meanings.
-          So you can either click on the rune you want to know more about or use the search function.
+          {translate('info_box_text')}
         </Text>
       </View>
       <TextInput
         style={styles.input}
-        placeholder="Search runes..."
+        placeholder={translate('search_placeholder')}
         placeholderTextColor="#e0c097"
         value={query}
         onChangeText={setQuery}
       />
-<FlatList
-  data={filteredRunes}
-  keyExtractor={(item) => item.id}
-  renderItem={({ item }) => (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() => navigation.navigate('RuneDetail', { rune: item })}
-    >
-      <Image source={item.image} style={styles.runeThumbnail} />
-      <Text style={styles.itemText}>{item.name}</Text>
-    </TouchableOpacity>
-  )}
-  ListEmptyComponent={<Text style={styles.emptyText}>No runes found.</Text>}
-  style={styles.flatListStyle} // <<-- Lägg till denna rad
-/>
+      <FlatList
+        data={filteredRunes}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => navigation.navigate('RuneDetail', { rune: item })}
+          >
+            <Image source={item.image} style={styles.runeThumbnail} />
+            <Text style={styles.itemText}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
+        ListEmptyComponent={<Text style={styles.emptyText}>{translate('no_runes_found')}</Text>}
+        style={styles.flatListStyle}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
     flatListStyle: {
-    flex: 1, // Detta är nyckeln!
+    flex: 1,
   },
   container: {
     padding: 20,
@@ -66,10 +76,10 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderBottomColor: '#e0c097',
     borderBottomWidth: 1,
-    flexDirection: 'row', //
-    alignItems: 'center', //
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  runeThumbnail: { //
+  runeThumbnail: {
     width: 30,
     height: 30,
     marginRight: 10,
@@ -99,5 +109,23 @@ const styles = StyleSheet.create({
     color: '#e0c097',
     fontSize: 15,
     textAlign: 'center',
+  },
+  // Nya stilar för språkvalsknapparna
+  languageButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // Lägg till lite marginal om du vill
+    marginBottom: 15,
+  },
+  languageButton: {
+    backgroundColor: '#3a3a5e', // En mörkare bakgrund för knapparna
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginHorizontal: 5, // Lite utrymme mellan knapparna
+  },
+  languageButtonText: {
+    color: '#e0c097', // Samma guldaktiga färg som övrig text
+    fontSize: 16,
   },
 });
