@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'; //
 import runes from '../data/runes';
 
 export default function SearchScreen({ navigation }) {
@@ -20,31 +20,36 @@ export default function SearchScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Search runes..."
-        placeholderTextColor="#e0c097" // Gör även placeholder ljus
+        placeholderTextColor="#e0c097"
         value={query}
         onChangeText={setQuery}
       />
-      <FlatList
-        data={filteredRunes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => navigation.navigate('RuneDetail', { rune: item })}
-          >
-            <Text style={styles.itemText}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-        ListEmptyComponent={<Text style={styles.emptyText}>No runes found.</Text>}
-      />
+<FlatList
+  data={filteredRunes}
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => (
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => navigation.navigate('RuneDetail', { rune: item })}
+    >
+      <Image source={item.image} style={styles.runeThumbnail} />
+      <Text style={styles.itemText}>{item.name}</Text>
+    </TouchableOpacity>
+  )}
+  ListEmptyComponent={<Text style={styles.emptyText}>No runes found.</Text>}
+  style={styles.flatListStyle} // <<-- Lägg till denna rad
+/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+    flatListStyle: {
+    flex: 1, // Detta är nyckeln!
+  },
   container: {
     padding: 20,
-    backgroundColor: '#1a1a2e', // Mystisk mörkblå bakgrund
+    backgroundColor: '#1a1a2e',
     flexGrow: 1,
   },
   input: {
@@ -54,13 +59,21 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingHorizontal: 10,
     marginBottom: 15,
-    color: '#e0c097', // Gör texten ljus
-    backgroundColor: '#22223b', // Valfritt: mörk bakgrund för bättre kontrast
+    color: '#e0c097',
+    backgroundColor: '#22223b',
   },
   item: {
     paddingVertical: 15,
     borderBottomColor: '#e0c097',
     borderBottomWidth: 1,
+    flexDirection: 'row', //
+    alignItems: 'center', //
+  },
+  runeThumbnail: { //
+    width: 30,
+    height: 30,
+    marginRight: 10,
+    resizeMode: 'contain',
   },
   itemText: {
     fontSize: 18,
@@ -73,7 +86,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#888',
   },
-    infoBox: {
+  infoBox: {
     backgroundColor: '#22223b',
     borderRadius: 10,
     padding: 15,

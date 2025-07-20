@@ -20,7 +20,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "standalone",
+      "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -37,6 +37,17 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "96a1eb73-1d23-425f-bcfb-70fd873967e4"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/96a1eb73-1d23-425f-bcfb-70fd873967e4"
     }
   }
 }
